@@ -4,7 +4,12 @@
       "PowerShell(head *)",
       "PowerShell(Get-ChildItem \"E:\\\\02Projects\\\\03Auralys\" -Recurse -File | Select-Object -Property @{N='Path';E={$_.FullName.Replace\\('E:\\\\02Projects\\\\03Auralys\\\\',''\\)}} | Sort-Object Path | Format-Table -AutoSize)",
       "PowerShell(Start-Sleep -Seconds 3; Invoke-WebRequest -Uri \"http://localhost:3001/api/history\" -UseBasicParsing -TimeoutSec 5 | Select-Object StatusCode, Content)",
-      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3001/api/history\" -UseBasicParsing -TimeoutSec 3 | Select-Object StatusCode)"
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3001/api/history\" -UseBasicParsing -TimeoutSec 3 | Select-Object StatusCode)",
+      "PowerShell(python -c \"import speechbrain; print\\('version:', speechbrain.__version__\\)\")",
+      "PowerShell(python -c \"from speechbrain.inference.separation import SepformerSeparation; print\\('OK:', SepformerSeparation\\)\")",
+      "PowerShell(python -c \"from speechbrain.inference.separation import SepformerSeparation; print\\([m for m in dir\\(SepformerSeparation\\) if not m.startswith\\('_'\\) and 'sep' in m.lower\\(\\) or 'enhanc' in m.lower\\(\\) or 'infer' in m.lower\\(\\)]\\)\")",
+      "PowerShell(python -c \"import audioread; print\\(audioread.__version__\\)\")",
+      "PowerShell(python -c \"import sys; print\\(sys.version\\)\")"
     ]
   }
 }

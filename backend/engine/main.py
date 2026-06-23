@@ -13,6 +13,9 @@ import time
 import argparse
 import traceback
 
+# Suppress HuggingFace Hub symlink warning on Windows (we use COPY strategy instead)
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
+
 # Add engine parent dir to path so 'engine' package resolves correctly
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -44,9 +47,25 @@ def parse_args():
     return parser.parse_args()
 
 
+def _to_serializable(obj):
+    """Recursively convert numpy scalars/arrays to JSON-serializable Python types."""
+    import numpy as np
+    if isinstance(obj, dict):
+        return {k: _to_serializable(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_to_serializable(v) for v in obj]
+    if isinstance(obj, np.integer):
+        return int(obj)
+    if isinstance(obj, np.floating):
+        return float(obj)
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    return obj
+
+
 def output_result(result: dict):
     """Write JSON result to stdout and flush."""
-    print(json.dumps(result), flush=True)
+    print(json.dumps(_to_serializable(result)), flush=True)
 
 
 def main():

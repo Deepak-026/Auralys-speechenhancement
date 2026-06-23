@@ -65,5 +65,5 @@ def estimate_snr_improvement(original: np.ndarray, enhanced: np.ndarray) -> floa
     enhanced_power = np.mean(enhanced ** 2)
     if original_power < 1e-12:
         return 0.0
-    ratio = enhanced_power / (original_power + 1e-12)
-    return round(10.0 * np.log10(max(ratio, 1e-12)), 2)
+    ratio = float(enhanced_power) / (float(original_power) + 1e-12)
+    return round(float(10.0 * np.log10(max(ratio, 1e-12))), 2)

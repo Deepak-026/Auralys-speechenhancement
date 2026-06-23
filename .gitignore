@@ -26,6 +26,7 @@ backend/temp/*
 backend/logs/*
 !backend/logs/.gitkeep
 backend/engine/pretrained_models/
+.claude/
 
 # OS
 .DS_Store

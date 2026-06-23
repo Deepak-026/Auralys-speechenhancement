@@ -1,5 +1,6 @@
 import numpy as np
-import librosa
+from math import gcd
+from scipy.signal import resample_poly
 from engine.utils.audio_utils import stereo_to_mono, to_float32, clamp, normalize_amplitude
 from engine.utils.exceptions import PreprocessingError
 from engine.utils.logger import get_logger
@@ -39,15 +40,13 @@ def transform_audio(
         elif waveform.ndim == 1 and target_channels > 1:
             waveform = np.stack([waveform] * target_channels, axis=0)
 
-        # Resample if needed
+        # Resample if needed — use scipy.signal.resample_poly (avoids librosa lazy_loader
+        # which triggers a lazy_loader/SpeechBrain/k2 interaction bug on Python 3.13)
         if src_sample_rate != target_sr:
             logger.info(f"Resampling {src_sample_rate} Hz → {target_sr} Hz")
-            waveform = librosa.resample(
-                waveform,
-                orig_sr=src_sample_rate,
-                target_sr=target_sr,
-                res_type="soxr_hq",
-            )
+            g = gcd(src_sample_rate, target_sr)
+            up, down = target_sr // g, src_sample_rate // g
+            waveform = resample_poly(waveform, up, down).astype(np.float32)
 
         # Normalize amplitude to [-1, 1]
         waveform = normalize_amplitude(waveform, target_peak=0.95)
