@@ -1,0 +1,17 @@
+[
+  {
+    "id": "7141d6f6-f2b7-4b6a-9566-f0fb2d8fb7f4",
+    "filename": "enhanced_7141d6f6-f2b7-4b6a-9566-f0fb2d8fb7f4.wav",
+    "originalFilename": "whoosh-cinematic-sound-effect-376889.mp3",
+    "status": "error",
+    "createdAt": "2026-06-23T18:37:12.865Z",
+    "completedAt": "2026-06-23T18:37:35.711Z",
+    "model": "sepformer-wham16k",
+    "noiseReduction": "auto",
+    "outputFormat": "wav",
+    "inputMetadata": null,
+    "outputMetadata": null,
+    "outputFile": null,
+    "error": "SpeechBrain is not installed. Run: pip install speechbrain"
+  }
+]

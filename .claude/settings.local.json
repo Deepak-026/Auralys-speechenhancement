@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(head *)",
+      "PowerShell(Get-ChildItem \"E:\\\\02Projects\\\\03Auralys\" -Recurse -File | Select-Object -Property @{N='Path';E={$_.FullName.Replace\\('E:\\\\02Projects\\\\03Auralys\\\\',''\\)}} | Sort-Object Path | Format-Table -AutoSize)",
+      "PowerShell(Start-Sleep -Seconds 3; Invoke-WebRequest -Uri \"http://localhost:3001/api/history\" -UseBasicParsing -TimeoutSec 5 | Select-Object StatusCode, Content)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3001/api/history\" -UseBasicParsing -TimeoutSec 3 | Select-Object StatusCode)"
+    ]
+  }
+}
