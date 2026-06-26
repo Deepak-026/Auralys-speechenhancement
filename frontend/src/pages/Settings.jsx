@@ -3,7 +3,7 @@ import { Settings as SettingsIcon, Trash2, Moon } from 'lucide-react';
 import { MODELS, NOISE_LEVELS } from '../utils/constants';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import { useApp } from '../context/AppContext';
-import axios from 'axios';
+import api from '../services/api';
 
 export default function Settings() {
   const { addNotification, refreshHistory } = useApp();
@@ -13,8 +13,8 @@ export default function Settings() {
 
   const handleClearHistory = async () => {
     try {
-      const history = await axios.get('/api/history').then(r => r.data.history);
-      await Promise.all(history.map((e) => axios.delete(`/api/history/${e.id}`)));
+      const history = await api.get('/history').then(r => r.data.history);
+      await Promise.all(history.map((e) => api.delete(`/history/${e.id}`)));
       await refreshHistory();
       addNotification({ type: 'success', message: 'History cleared successfully.' });
     } catch {

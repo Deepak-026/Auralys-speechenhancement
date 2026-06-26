@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Download, Loader2 } from 'lucide-react';
+import api from '../../services/api';
 
 export default function DownloadButton({ jobId, filename, className = '' }) {
   const [downloading, setDownloading] = useState(false);
@@ -8,9 +9,11 @@ export default function DownloadButton({ jobId, filename, className = '' }) {
     if (!jobId || downloading) return;
     setDownloading(true);
     try {
-      const response = await fetch(`/api/enhancement/output/${jobId}?download=true`);
-      if (!response.ok) throw new Error('Download failed');
-      const blob = await response.blob();
+      const response = await api.get(`/enhancement/output/${jobId}`, {
+        responseType: 'blob',
+        params: { download: true },
+      });
+      const blob = response.data;
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

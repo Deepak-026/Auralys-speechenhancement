@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api, { API_BASE_URL } from './api';
 
 export async function uploadAndEnhance(file, settings, onUploadProgress) {
   const formData = new FormData();
@@ -7,7 +7,7 @@ export async function uploadAndEnhance(file, settings, onUploadProgress) {
   formData.append('noiseReduction', settings.noiseReduction || 'auto');
   formData.append('outputFormat', settings.outputFormat || 'wav');
 
-  const response = await axios.post('/api/enhancement/upload', formData, {
+  const response = await api.post('/enhancement/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     timeout: 15 * 60 * 1000,
     onUploadProgress: (progressEvent) => {
@@ -22,15 +22,15 @@ export async function uploadAndEnhance(file, settings, onUploadProgress) {
 }
 
 export function getOutputUrl(jobId, download = false) {
-  return `/api/enhancement/output/${jobId}${download ? '?download=true' : ''}`;
+  return `${API_BASE_URL}/enhancement/output/${jobId}${download ? '?download=true' : ''}`;
 }
 
 export async function getJobStatus(jobId) {
-  const response = await axios.get(`/api/enhancement/status/${jobId}`);
+  const response = await api.get(`/enhancement/status/${jobId}`);
   return response.data;
 }
 
 export async function fetchModels() {
-  const response = await axios.get('/api/enhancement/models');
+  const response = await api.get('/enhancement/models');
   return response.data.models;
 }
