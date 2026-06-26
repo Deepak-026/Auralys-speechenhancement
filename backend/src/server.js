@@ -70,10 +70,23 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Serve frontend built files
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+}
+
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ success: false, error: `Route ${req.path} not found.` });
 });
+
+// SPA catch-all — serve index.html for frontend routes
+if (fs.existsSync(frontendDist)) {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
 // Global error handler
 app.use(errorHandler);
