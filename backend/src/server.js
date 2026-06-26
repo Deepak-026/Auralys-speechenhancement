@@ -29,13 +29,14 @@ app.use(
   })
 );
 
-// CORS — allow frontend dev server
+// CORS
+const allowedOrigins = process.env.ALLOWED_ORIGIN
+  ? process.env.ALLOWED_ORIGIN.split(',').map(s => s.trim())
+  : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'];
+
 app.use(
   cors({
-    origin:
-      NODE_ENV === 'production'
-        ? process.env.ALLOWED_ORIGIN || false
-        : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'],
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
